@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labour Chowk Privacy Policy</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f4f7ff;
+    overflow-x:hidden;
+}
+
+/* NAVBAR */
+
+nav{
+    width:100%;
+    padding:18px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#07122f;
+    position:sticky;
+    top:0;
+    z-index:999;
+}
+
+.logo{
+    color:white;
+    font-size:32px;
+    font-weight:700;
+}
+
+.logo span{
+    color:#ff9800;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:35px;
+}
+
+nav ul li a{
+    color:white;
+    text-decoration:none;
+    font-size:17px;
+    transition:0.3s;
+}
+
+nav ul li a:hover{
+    color:#ff9800;
+}
+
+/* HERO */
+
+.hero{
+    width:100%;
+    min-height:90vh;
+    background:linear-gradient(135deg,#07122f,#21094e,#ff3d00);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    padding:40px;
+}
+
+.hero::before{
+    content:'';
+    position:absolute;
+    width:500px;
+    height:500px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+    top:-150px;
+    left:-120px;
+}
+
+.hero::after{
+    content:'';
+    position:absolute;
+    width:450px;
+    height:450px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+    bottom:-120px;
+    right:-120px;
+}
+
+.hero h1{
+    font-size:90px;
+    color:white;
+    line-height:1.1;
+    z-index:1;
+}
+
+.hero h1 span{
+    color:#ffb703;
+}
+
+.hero p{
+    color:white;
+    font-size:28px;
+    margin-top:20px;
+    z-index:1;
+}
+
+.badges{
+    display:flex;
+    gap:20px;
+    margin-top:40px;
+    flex-wrap:wrap;
+    justify-content:center;
+    z-index:1;
+}
+
+.badge{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.1);
+    padding:14px 30px;
+    border-radius:50px;
+    color:white;
+    font-size:18px;
+    backdrop-filter:blur(10px);
+}
+
+/* MAIN */
+
+.container{
+    width:90%;
+    max-width:1250px;
+    margin:auto;
+    margin-top:-100px;
+    position:relative;
+    z-index:5;
+}
+
+/* INTRO CARD */
+
+.intro{
+    background:white;
+    border-radius:35px;
+    padding:45px;
+    display:flex;
+    align-items:center;
+    gap:30px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.08);
+}
+
+.intro-icon{
+    min-width:120px;
+    height:120px;
+    border-radius:30px;
+    background:linear-gradient(135deg,#5b21ff,#ff006e);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:55px;
+}
+
+.intro-text h2{
+    font-size:45px;
+    color:#111827;
+    margin-bottom:10px;
+}
+
+.intro-text p{
+    font-size:19px;
+    color:#555;
+    line-height:1.9;
+}
+
+/* SECTION TITLE */
+
+.section-title{
+    text-align:center;
+    margin:80px 0 40px;
+}
+
+.section-title h2{
+    font-size:52px;
+    color:#111827;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+
+.card{
+    background:white;
+    border-radius:30px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.07);
+    transition:0.4s;
+    position:relative;
+    overflow:hidden;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card::before{
+    content:'';
+    width:100%;
+    height:5px;
+    background:linear-gradient(to right,#ff9800,#ff006e);
+    position:absolute;
+    bottom:0;
+    left:0;
+}
+
+.icon{
+    width:90px;
+    height:90px;
+    margin:auto;
+    margin-bottom:25px;
+    border-radius:25px;
+    background:linear-gradient(135deg,#5b21ff,#ff006e);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:42px;
+}
+
+.card h3{
+    font-size:28px;
+    margin-bottom:15px;
+    color:#111827;
+}
+
+.card p{
+    color:#666;
+    line-height:1.8;
+}
+
+/* SECURITY */
+
+.security{
+    margin-top:80px;
+    background:linear-gradient(135deg,#07122f,#21094e,#ff3d00);
+    padding:60px;
+    border-radius:35px;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.security h2{
+    font-size:52px;
+}
+
+.security p{
+    font-size:20px;
+    margin-top:20px;
+    max-width:700px;
+    line-height:1.9;
+}
+
+.lock{
+    font-size:140px;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:80px;
+    background:#07122f;
+    color:white;
+    text-align:center;
+    padding:35px;
+}
+
+footer p{
+    font-size:18px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero h1{
+    font-size:55px;
+}
+
+.hero p{
+    font-size:20px;
+}
+
+.intro{
+    flex-direction:column;
+    text-align:center;
+}
+
+.section-title h2{
+    font-size:38px;
+}
+
+.security h2{
+    font-size:38px;
+}
+
+nav{
+    flex-direction:column;
+    gap:20px;
+}
+
+nav ul{
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+Labour <span>Chowk</span>
+</div>
+
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Terms</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<h1>
+Labour Chowk <br>
+<span>Privacy Policy</span>
+</h1>
+
+<p>Your Privacy & Security Matter To Us</p>
+
+<div class="badges">
+<div class="badge">🔒 Secure</div>
+<div class="badge">🛡 Trusted</div>
+<div class="badge">👷 Worker Focused</div>
+</div>
+
+</section>
+
+<div class="container">
+
+<div class="intro">
+
+<div class="intro-icon">
+👷
+</div>
+
+<div class="intro-text">
+
+<h2>Introduction</h2>
+
+<p>
+Welcome to Labour Chowk. We connect customers with trusted workers including electricians, plumbers, AC technicians, cleaners, painters, drivers, mechanics, carpenters and many more local service professionals.
+</p>
+
+</div>
+
+</div>
+
+<div class="section-title">
+<h2>Information We Collect</h2>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">👤</div>
+<h3>Personal Info</h3>
+<p>Name, phone number, email address and profile details.</p>
+</div>
+
+<div class="card">
+<div class="icon">📍</div>
+<h3>Location</h3>
+<p>Used to help users find nearby workers and services.</p>
+</div>
+
+<div class="card">
+<div class="icon">📷</div>
+<h3>Camera</h3>
+<p>Upload profile pictures, work images and documents.</p>
+</div>
+
+<div class="card">
+<div class="icon">📱</div>
+<h3>Device Data</h3>
+<p>Collecting app usage information to improve performance.</p>
+</div>
+
+<div class="card">
+<div class="icon">🔔</div>
+<h3>Notifications</h3>
+<p>Sending updates, alerts and important service messages.</p>
+</div>
+
+<div class="card">
+<div class="icon">🔒</div>
+<h3>Security</h3>
+<p>Protecting your data using modern secure technologies.</p>
+</div>
+
+</div>
+
+<div class="security">
+
+<div>
+
+<h2>Your Trust Is <br>Our Priority</h2>
+
+<p>
+Labour Chowk uses trusted security systems and technologies to keep your information safe and secure from unauthorized access.
+</p>
+
+</div>
+
+<div class="lock">
+🔐
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>
+© 2026 Labour Chowk • All Rights Reserved 🚀
+</p>
+
+</footer>
+
+</body>
+</html>
