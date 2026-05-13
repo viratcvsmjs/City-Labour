@@ -14,6 +14,7 @@
     padding:0;
     box-sizing:border-box;
     font-family:'Poppins',sans-serif;
+    scroll-behavior:smooth;
 }
 
 body{
@@ -33,6 +34,7 @@ nav{
     position:sticky;
     top:0;
     z-index:999;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
 .logo{
@@ -56,6 +58,7 @@ nav ul li a{
     text-decoration:none;
     font-size:17px;
     transition:0.3s;
+    font-weight:500;
 }
 
 nav ul li a:hover{
@@ -148,7 +151,7 @@ nav ul li a:hover{
     z-index:5;
 }
 
-/* INTRO CARD */
+/* INTRO */
 
 .intro{
     background:white;
@@ -184,7 +187,7 @@ nav ul li a:hover{
     line-height:1.9;
 }
 
-/* SECTION TITLE */
+/* TITLES */
 
 .section-title{
     text-align:center;
@@ -348,9 +351,9 @@ Labour <span>Chowk</span>
 
 <ul>
 <li><a href="#">Home</a></li>
-<li><a href="#">Privacy Policy</a></li>
-<li><a href="#">Terms</a></li>
-<li><a href="#">Contact</a></li>
+<li><a href="#privacy">Privacy</a></li>
+<li><a href="#terms">Terms</a></li>
+<li><a href="#contact">Contact</a></li>
 </ul>
 
 </nav>
@@ -374,6 +377,8 @@ Labour Chowk <br>
 
 <div class="container">
 
+<!-- INTRO -->
+
 <div class="intro">
 
 <div class="intro-icon">
@@ -392,7 +397,9 @@ Welcome to Labour Chowk. We connect customers with trusted workers including ele
 
 </div>
 
-<div class="section-title">
+<!-- PRIVACY -->
+
+<div class="section-title" id="privacy">
 <h2>Information We Collect</h2>
 </div>
 
@@ -436,6 +443,8 @@ Welcome to Labour Chowk. We connect customers with trusted workers including ele
 
 </div>
 
+<!-- SECURITY -->
+
 <div class="security">
 
 <div>
@@ -454,12 +463,9 @@ Labour Chowk uses trusted security systems and technologies to keep your informa
 
 </div>
 
-</div>
-<!-- ADD THIS BELOW SECURITY SECTION -->
+<!-- TERMS -->
 
-<!-- TERMS & CONDITIONS -->
-
-<div class="section-title">
+<div class="section-title" id="terms">
 <h2>Terms & Conditions</h2>
 </div>
 
@@ -501,7 +507,7 @@ Labour Chowk connects customers and workers but does not directly employ workers
 <div class="icon">🔄</div>
 <h3>Policy Updates</h3>
 <p>
-Our privacy policy and terms may be updated anytime without notice.
+Policies may be updated anytime without prior notice.
 </p>
 </div>
 
@@ -509,15 +515,15 @@ Our privacy policy and terms may be updated anytime without notice.
 <div class="icon">🛡</div>
 <h3>User Safety</h3>
 <p>
-We work to maintain a safe, trusted and secure platform experience.
+We work hard to maintain a safe and trusted platform experience.
 </p>
 </div>
 
 </div>
 
-<!-- CONTACT SECTION -->
+<!-- CONTACT -->
 
-<div class="section-title">
+<div class="section-title" id="contact">
 <h2>Contact Us</h2>
 </div>
 
@@ -525,31 +531,25 @@ We work to maintain a safe, trusted and secure platform experience.
 
 <div class="card">
 <div class="icon">📧</div>
-<h3>Email Support</h3>
-<p>
-labourchowk@email.com
-</p>
+<h3>Email</h3>
+<p>labourchowk@email.com</p>
 </div>
 
 <div class="card">
 <div class="icon">📞</div>
-<h3>Phone Number</h3>
-<p>
-+91 9873777990
-</p>
+<h3>Phone</h3>
+<p>+91 9873777990</p>
 </div>
 
 <div class="card">
 <div class="icon">🌍</div>
 <h3>Service Area</h3>
-<p>
-India • Nearby Labour Services • Local Worker Platform
-</p>
+<p>India • Local Worker Services</p>
 </div>
 
 </div>
 
-<!-- ABOUT SECTION -->
+<!-- ABOUT -->
 
 <div class="section-title">
 <h2>About Labour Chowk</h2>
@@ -566,11 +566,7 @@ India • Nearby Labour Services • Local Worker Platform
 <h2>Made By Vansh</h2>
 
 <p>
-Labour Chowk is a modern platform developed by Vansh to help customers quickly find trusted workers including electricians, plumbers, AC technicians, drivers, cleaners, mechanics, painters and many other skilled professionals.
-</p>
-
-<p style="margin-top:20px;">
-Our mission is to digitally connect workers and customers with secure, smart and easy technology across India.
+Labour Chowk is a smart worker hiring platform developed by Vansh to help users quickly find trusted local workers across India.
 </p>
 
 <p style="margin-top:20px;">
@@ -581,7 +577,7 @@ Our mission is to digitally connect workers and customers with secure, smart and
 
 </div>
 
-<!-- FOOTER -->
+</div>
 
 <footer>
 
