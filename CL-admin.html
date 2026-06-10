@@ -2,58 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>City Labour Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>🏗️ City Labour | Mobile + PC Admin Panel</title>
+    
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-    <!-- Chart.js -->
+    
+    <!-- Charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <!-- Font Awesome -->
+    
+    <!-- Icons & Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
             min-height: 100vh;
         }
 
-        /* Login Container */
+        /* Login Page - Mobile First */
         .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 16px;
         }
 
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
+        .login-bg {
+            position: absolute;
             width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: fadeInUp 0.6s ease;
+            height: 100%;
+            overflow: hidden;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .floating-emoji {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: float 20s infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px 24px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            z-index: 1;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-header {
@@ -61,48 +91,166 @@
             margin-bottom: 30px;
         }
 
-        .login-header i {
+        .login-header .emoji {
             font-size: 60px;
-            color: #667eea;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .login-header h2 {
-            margin-top: 10px;
-            color: #333;
+            margin-top: 12px;
+            color: #1e293b;
+            font-size: 24px;
         }
 
-        /* Dashboard Layout */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #475569;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 16px;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .setup-btn {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+
+        /* Dashboard Layout - Mobile First */
         .dashboard {
             display: none;
+            min-height: 100vh;
         }
 
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: none;
+            justify-content: space-around;
+            padding: 12px 16px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .mobile-nav-item span:first-child {
+            font-size: 24px;
+        }
+
+        .mobile-nav-item span:last-child {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .mobile-nav-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .mobile-nav-item.active span:last-child {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Sidebar for Desktop */
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
-            width: 260px;
+            width: 280px;
             height: 100%;
             background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
             color: white;
             transition: all 0.3s;
             z-index: 1000;
             overflow-y: auto;
+            transform: translateX(-100%);
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
         }
 
         .sidebar-header {
-            padding: 25px;
+            padding: 30px 25px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header .emoji {
+            font-size: 50px;
         }
 
         .sidebar-header h3 {
             font-size: 24px;
             margin-top: 10px;
-        }
-
-        .sidebar-header i {
-            font-size: 40px;
-            color: #f59e0b;
         }
 
         .nav-menu {
@@ -118,42 +266,80 @@
             align-items: center;
             gap: 12px;
             color: rgba(255,255,255,0.7);
+            margin: 5px 15px;
+            border-radius: 12px;
         }
 
         .nav-item:hover, .nav-item.active {
-            background: rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
             color: white;
-            border-left: 3px solid #f59e0b;
         }
 
-        .nav-item i {
-            width: 24px;
+        .nav-item .emoji {
+            font-size: 20px;
         }
 
+        .badge {
+            background: #ef4444;
+            color: white;
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 11px;
+            margin-left: auto;
+        }
+
+        /* Main Content */
         .main-content {
-            margin-left: 260px;
-            padding: 20px;
+            padding: 16px;
+            padding-bottom: 80px;
         }
 
         .top-bar {
             background: white;
-            border-radius: 15px;
-            padding: 15px 25px;
-            margin-bottom: 25px;
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .top-bar h2 {
-            color: #333;
+        .menu-toggle {
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: none;
+            font-size: 20px;
+        }
+
+        .page-title h2 {
+            font-size: 18px;
+            color: #1e293b;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 4px;
         }
 
         .admin-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
 
         .logout-btn {
@@ -161,197 +347,205 @@
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        .logout-btn:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-        }
-
-        /* Stats Cards */
+        /* Stats Cards - Mobile Optimized */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: white;
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 16px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            cursor: pointer;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
+        .stat-card:active {
+            transform: scale(0.98);
         }
 
         .stat-info h3 {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e293b;
         }
 
         .stat-info p {
-            color: #666;
-            margin-top: 5px;
+            color: #64748b;
+            margin-top: 4px;
+            font-size: 11px;
         }
 
-        .stat-icon i {
-            font-size: 50px;
-            opacity: 0.3;
+        .stat-emoji {
+            font-size: 32px;
         }
 
         /* Content Sections */
         .content-section {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             display: none;
         }
 
         .content-section.active {
             display: block;
-            animation: fadeIn 0.5s;
+            animation: fadeIn 0.3s;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
         }
 
-        /* Labour Cards */
-        .labour-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
+        .section-header h3 {
+            font-size: 18px;
+            color: #1e293b;
         }
 
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+        /* Cards for Mobile */
         .labour-card {
             background: #f8fafc;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
             border: 1px solid #e2e8f0;
         }
 
-        .labour-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .labour-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px;
-            position: relative;
-        }
-
-        .verification-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255,255,255,0.2);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-
-        .labour-body {
-            padding: 15px;
+        .labour-card h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
         }
 
         .labour-info {
-            margin-bottom: 10px;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 8px 0;
+            font-size: 13px;
         }
 
-        .labour-info i {
-            width: 20px;
-            color: #667eea;
-        }
-
-        .skill-tag {
-            background: #e2e8f0;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            display: inline-block;
-            margin: 2px;
-        }
-
-        .image-preview {
-            display: flex;
-            gap: 5px;
-            margin: 10px 0;
-        }
-
-        .image-preview img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
+        .labour-info span {
+            color: #475569;
         }
 
         .action-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
         }
 
-        .btn-verify, .btn-reject, .btn-view {
-            flex: 1;
-            padding: 8px;
+        .btn-sm {
+            padding: 10px 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s;
+            flex: 1;
+            min-width: 70px;
         }
 
-        .btn-verify {
-            background: #10b981;
-            color: white;
+        .btn-sm:active {
+            transform: scale(0.97);
         }
 
-        .btn-verify:hover {
-            background: #059669;
+        .btn-verify { background: #10b981; color: white; }
+        .btn-reject { background: #ef4444; color: white; }
+        .btn-view { background: #3b82f6; color: white; }
+        .btn-edit { background: #f59e0b; color: white; }
+        .btn-ban { background: #8b5cf6; color: white; }
+        .btn-unban { background: #06b6d4; color: white; }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
         }
 
-        .btn-reject {
-            background: #ef4444;
-            color: white;
+        .status-verified { background: #d1fae5; color: #065f46; }
+        .status-pending { background: #fed7aa; color: #92400e; }
+        .status-banned { background: #fee2e2; color: #991b1b; }
+        .status-active { background: #d1fae5; color: #065f46; }
+
+        /* Category Grid */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
 
-        .btn-reject:hover {
-            background: #dc2626;
+        .category-item {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2e8f0;
         }
 
-        .btn-view {
-            background: #3b82f6;
-            color: white;
+        /* Tables - Make scrollable on mobile */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .data-table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
         }
 
         /* Modal */
@@ -366,666 +560,1029 @@
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            padding: 16px;
         }
 
         .modal-content {
             background: white;
             border-radius: 20px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85vh;
             overflow-y: auto;
-            padding: 25px;
+            padding: 20px;
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f1f5f9;
         }
 
         .close-modal {
             cursor: pointer;
             font-size: 24px;
+            padding: 4px;
         }
 
-        /* Content Cards */
-        .content-card {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
             border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
         }
 
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 10px;
+        /* Charts */
+        .chart-container {
+            margin-top: 20px;
         }
 
-        .content-title {
-            font-weight: bold;
-            color: #333;
+        canvas {
+            max-height: 250px;
+            width: 100% !important;
         }
 
-        .content-status {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-        }
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .mobile-bottom-nav {
+                display: none !important;
+            }
 
-        .status-active {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-pending {
-            background: #fed7aa;
-            color: #92400e;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
             .sidebar {
-                left: -260px;
+                transform: translateX(0);
             }
-            .sidebar.active {
+
+            .main-content {
+                margin-left: 280px;
+                padding: 20px;
+                padding-bottom: 20px;
+            }
+
+            .menu-toggle {
+                display: none !important;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .section-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .search-box {
+                width: auto;
+            }
+
+            .search-box input {
+                width: 250px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .labour-card {
+                display: none;
+            }
+
+            .table-container {
+                overflow-x: visible;
+            }
+
+            .data-table {
+                min-width: auto;
+            }
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 767px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
                 left: 0;
+                width: 80%;
+                max-width: 280px;
+                height: 100%;
+                z-index: 1002;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
             }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-bottom-nav {
+                display: flex;
+            }
+
             .main-content {
                 margin-left: 0;
+                padding-bottom: 70px;
             }
+
             .menu-toggle {
                 display: block;
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                z-index: 1001;
-                background: white;
-                padding: 10px;
-                border-radius: 8px;
-                cursor: pointer;
             }
+
+            .data-table {
+                display: none;
+            }
+
+            .labour-card {
+                display: block;
+            }
+        }
+
+        /* Overlay for mobile sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+        }
+
+        .empty-state span {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 16px;
         }
     </style>
 </head>
 <body>
-    <!-- Login Container -->
+    <!-- Login Page -->
     <div class="login-container" id="loginContainer">
-        <div class="login-card">
+        <div class="login-bg">
+            <div class="floating-emoji" style="top: 10%; left: 5%;">🏗️</div>
+            <div class="floating-emoji" style="top: 70%; left: 85%;">👷</div>
+            <div class="floating-emoji" style="top: 50%; left: 10%;">🔨</div>
+            <div class="floating-emoji" style="top: 20%; left: 80%;">🏠</div>
+        </div>
+        <div class="login-box">
             <div class="login-header">
-                <i class="fas fa-hard-hat"></i>
-                <h2>Admin Login</h2>
-                <p style="color: #666; margin-top: 10px;">City Labour Management System</p>
+                <div class="emoji">🏗️👷‍♂️</div>
+                <h2>Admin Portal</h2>
+                <p style="color: #64748b; margin-top: 8px;">City Labour Management System</p>
             </div>
             <form id="loginForm">
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; color: #333;">Email</label>
-                    <input type="email" id="adminEmail" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <div class="input-group">
+                    <label>📧 Email Address</label>
+                    <input type="email" id="adminEmail" placeholder="xxxx@xxxxxxxx.xx" required>
                 </div>
-                <div style="margin-bottom: 25px;">
-                    <label style="display: block; margin-bottom: 8px; color: #333;">Password</label>
-                    <input type="password" id="adminPassword" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <div class="input-group">
+                    <label>🔒 Password</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required>
                 </div>
-                <button type="submit" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">Login</button>
+                <button type="submit" class="login-btn">🚀 Sign In</button>
+                <button type="button" class="setup-btn" onclick="setupAdmin()">
+                    ⚡ First Time Setup
+                </button>
             </form>
-            <div id="loginError" style="color: red; margin-top: 15px; text-align: center;"></div>
+            <div id="loginMessage" style="margin-top: 16px; text-align: center; font-size: 14px;"></div>
         </div>
     </div>
 
     <!-- Dashboard -->
     <div class="dashboard" id="dashboard">
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+        
+        <!-- Desktop Sidebar -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <i class="fas fa-city"></i>
-                <h3>City Labour</h3>
-                <p style="font-size: 12px; margin-top: 5px;">Admin Panel</p>
+                <div class="emoji">🏙️👷</div>
+                <h3>CityLabour</h3>
+                <p>Premium Admin Panel</p>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item active" data-tab="dashboard">
-                    <i class="fas fa-chart-line"></i>
+                    <span class="emoji">📊</span>
                     <span>Dashboard</span>
                 </li>
                 <li class="nav-item" data-tab="labours">
-                    <i class="fas fa-users"></i>
+                    <span class="emoji">👥</span>
                     <span>Labour Management</span>
                 </li>
                 <li class="nav-item" data-tab="verification">
-                    <i class="fas fa-check-circle"></i>
+                    <span class="emoji">⏳</span>
                     <span>Verification Queue</span>
+                    <span class="badge" id="pendingCount">0</span>
+                </li>
+                <li class="nav-item" data-tab="categories">
+                    <span class="emoji">📁</span>
+                    <span>Categories</span>
                 </li>
                 <li class="nav-item" data-tab="content">
-                    <i class="fas fa-newspaper"></i>
+                    <span class="emoji">📰</span>
                     <span>Content Moderation</span>
+                </li>
+                <li class="nav-item" data-tab="users">
+                    <span class="emoji">👤</span>
+                    <span>User Management</span>
+                </li>
+                <li class="nav-item" data-tab="banned">
+                    <span class="emoji">🚫</span>
+                    <span>Banned Users</span>
+                    <span class="badge" id="bannedCount">0</span>
+                </li>
+                <li class="nav-item" data-tab="settings">
+                    <span class="emoji">⚙️</span>
+                    <span>Settings</span>
                 </li>
             </ul>
         </div>
 
+        <!-- Main Content -->
         <div class="main-content">
             <div class="top-bar">
-                <h2 id="pageTitle">Dashboard</h2>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="menu-toggle" onclick="toggleSidebar()">
+                        <span>☰</span>
+                    </div>
+                    <div class="page-title">
+                        <h2 id="pageTitle">📊 Dashboard</h2>
+                        <p id="pageSubtitle">Welcome back! 👋</p>
+                    </div>
+                </div>
                 <div class="admin-info">
-                    <i class="fas fa-user-circle" style="font-size: 32px;"></i>
-                    <span id="adminEmailDisplay"></span>
-                    <button class="logout-btn" onclick="logout()">Logout</button>
+                    <div class="admin-avatar" id="adminAvatar">👨‍💼</div>
+                    <button class="logout-btn" onclick="logout()">🚪</button>
                 </div>
             </div>
 
             <!-- Dashboard Section -->
             <div id="dashboardSection" class="content-section active">
-                <div class="stats-grid" id="statsGrid">
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3 id="totalLabours">0</h3>
-                            <p>Total Labours</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3 id="verifiedLabours">0</h3>
-                            <p>Verified Labours</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3 id="pendingLabours">0</h3>
-                            <p>Pending Verification</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <h3 id="totalContent">0</h3>
-                            <p>Total Posts</p>
-                        </div>
-                        <div class="stat-icon">
-                            <i class="fas fa-newspaper"></i>
-                        </div>
-                    </div>
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="chart-container">
+                    <canvas id="verificationChart"></canvas>
                 </div>
-                <div style="background: white; border-radius: 15px; padding: 20px;">
-                    <canvas id="verificationChart" style="max-height: 300px;"></canvas>
+                <div style="margin-top: 20px;">
+                    <h4 style="margin-bottom: 12px;">🔄 Recent Activity</h4>
+                    <div id="recentActivity"></div>
                 </div>
             </div>
 
-            <!-- Labour Management Section -->
+            <!-- Labour Management Section - Mobile Cards + Desktop Table -->
             <div id="laboursSection" class="content-section">
                 <div class="section-header">
-                    <h3><i class="fas fa-users"></i> All Labours</h3>
-                    <input type="text" id="searchLabour" placeholder="Search by name or phone..." style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; width: 250px;">
+                    <h3>👥 All Labours</h3>
+                    <div class="search-box">
+                        <input type="text" id="searchLabour" placeholder="🔍 Search...">
+                    </div>
                 </div>
-                <div id="laboursList" class="labour-grid"></div>
+                <!-- Desktop Table -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead><tr><th>Name</th><th>Phone</th><th>Category</th><th>Rate</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="laboursTable"></tbody>
+                    </table>
+                </div>
+                <!-- Mobile Cards -->
+                <div id="laboursCards"></div>
             </div>
 
-            <!-- Verification Queue Section -->
+            <!-- Verification Queue -->
             <div id="verificationSection" class="content-section">
                 <div class="section-header">
-                    <h3><i class="fas fa-clock"></i> Pending Verification</h3>
+                    <h3>⏳ Pending Verifications</h3>
                 </div>
-                <div id="verificationList" class="labour-grid"></div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead><tr><th>Name</th><th>Phone</th><th>Documents</th><th>Actions</th></tr></thead>
+                        <tbody id="verificationTable"></tbody>
+                    </table>
+                </div>
+                <div id="verificationCards"></div>
             </div>
 
-            <!-- Content Moderation Section -->
+            <!-- Categories -->
+            <div id="categoriesSection" class="content-section">
+                <div class="section-header">
+                    <h3>📁 Categories</h3>
+                    <button class="btn-sm btn-verify" onclick="showAddCategoryModal()">➕ Add</button>
+                </div>
+                <div id="categoriesList" class="category-grid"></div>
+            </div>
+
+            <!-- Content Moderation -->
             <div id="contentSection" class="content-section">
                 <div class="section-header">
-                    <h3><i class="fas fa-newspaper"></i> User Content</h3>
+                    <h3>📰 Content Moderation</h3>
                 </div>
                 <div id="contentList"></div>
+            </div>
+
+            <!-- Users -->
+            <div id="usersSection" class="content-section">
+                <div class="section-header">
+                    <h3>👤 All Users</h3>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead><tr><th>Name</th><th>Email</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="usersTable"></tbody>
+                    </table>
+                </div>
+                <div id="usersCards"></div>
+            </div>
+
+            <!-- Banned Users -->
+            <div id="bannedSection" class="content-section">
+                <div class="section-header">
+                    <h3>🚫 Banned Users</h3>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead><tr><th>Name</th><th>Email</th><th>Banned Date</th><th>Actions</th></tr></thead>
+                        <tbody id="bannedTable"></tbody>
+                    </table>
+                </div>
+                <div id="bannedCards"></div>
+            </div>
+
+            <!-- Settings -->
+            <div id="settingsSection" class="content-section">
+                <div class="section-header">
+                    <h3>⚙️ Settings</h3>
+                </div>
+                <div style="max-width: 500px;">
+                    <div class="form-group">
+                        <label>🏢 Site Title</label>
+                        <input type="text" id="siteTitle" value="City Labour">
+                    </div>
+                    <div class="form-group">
+                        <label>📧 Support Email</label>
+                        <input type="email" id="contactEmail" value="support@citylabour.com">
+                    </div>
+                    <div class="form-group">
+                        <label>📞 Support Phone</label>
+                        <input type="text" id="contactPhone" value="+91 9876543210">
+                    </div>
+                    <button class="login-btn" onclick="saveSettings()">💾 Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Navigation -->
+        <div class="mobile-bottom-nav" id="mobileBottomNav">
+            <div class="mobile-nav-item active" data-tab="dashboard">
+                <span>📊</span>
+                <span>Home</span>
+            </div>
+            <div class="mobile-nav-item" data-tab="labours">
+                <span>👥</span>
+                <span>Labours</span>
+            </div>
+            <div class="mobile-nav-item" data-tab="verification">
+                <span>⏳</span>
+                <span>Pending</span>
+                <span class="badge" id="mobilePendingBadge">0</span>
+            </div>
+            <div class="mobile-nav-item" data-tab="users">
+                <span>👤</span>
+                <span>Users</span>
+            </div>
+            <div class="mobile-nav-item" data-tab="settings">
+                <span>⚙️</span>
+                <span>Settings</span>
             </div>
         </div>
     </div>
 
-    <!-- Image Modal -->
+    <!-- Modals -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📋 Labour Details</h3>
+                <span class="close-modal" onclick="closeModal('detailsModal')">&times;</span>
+            </div>
+            <div id="detailsContent"></div>
+        </div>
+    </div>
+
     <div id="imageModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Image Preview</h3>
-                <span class="close-modal" onclick="closeImageModal()">&times;</span>
+                <h3>🖼️ Image Preview</h3>
+                <span class="close-modal" onclick="closeModal('imageModal')">&times;</span>
             </div>
-            <img id="modalImage" src="" style="width: 100%; border-radius: 10px;">
+            <img id="previewImage" src="" style="width: 100%; border-radius: 10px;">
+        </div>
+    </div>
+
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>➕ Add Category</h3>
+                <span class="close-modal" onclick="closeModal('categoryModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>📁 Name</label>
+                <input type="text" id="categoryName" placeholder="e.g., Plumbing">
+            </div>
+            <div class="form-group">
+                <label>🎨 Icon Emoji</label>
+                <input type="text" id="categoryIcon" placeholder="🔧">
+            </div>
+            <button class="login-btn" onclick="addCategory()">➕ Add</button>
         </div>
     </div>
 
     <script>
-        // Firebase Configuration (Replace with your config)
-     const firebaseConfig = {
-  apiKey: "AIzaSyAodjbOuk03ONEkSgOT9sut04pOkg3tdH8",
-  authDomain: "city-labour-47d7e.firebaseapp.com",
-  databaseURL: "https://city-labour-47d7e-default-rtdb.firebaseio.com",
-  projectId: "city-labour-47d7e",
-  storageBucket: "city-labour-47d7e.firebasestorage.app",
-  messagingSenderId: "307180217138",
-  appId: "1:307180217138:web:619de62777614dc77ead2b"
-};
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAodjbOuk03ONEkSgOT9sut04pOkg3tdH8",
+            authDomain: "city-labour-47d7e.firebaseapp.com",
+            databaseURL: "https://city-labour-47d7e-default-rtdb.firebaseio.com",
+            projectId: "city-labour-47d7e",
+            storageBucket: "city-labour-47d7e.firebasestorage.app",
+            messagingSenderId: "307180217138",
+            appId: "1:307180217138:web:619de62777614dc77ead2b"
+        };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
-        const storage = firebase.storage();
 
         let currentAdmin = null;
-        let chart = null;
+        let verificationChart = null;
 
-        // Login Handler
+        // Setup Admin
+        window.setupAdmin = async () => {
+            const messageDiv = document.getElementById('loginMessage');
+            messageDiv.innerHTML = '<span style="color: #10b981;">⚡ Setting up...</span>';
+            
+            try {
+                const email = "admin@citylabour.com";
+                const password = "Admin@123";
+                
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const uid = userCredential.user.uid;
+                
+                await database.ref(`admins/${uid}`).set({
+                    email: email,
+                    role: "super_admin",
+                    createdAt: Date.now()
+                });
+                
+                messageDiv.innerHTML = '<span style="color: #10b981;">✅ Admin created! You can now login.</span>';
+                document.getElementById('adminEmail').value = email;
+                document.getElementById('adminPassword').value = password;
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    messageDiv.innerHTML = '<span style="color: #f59e0b;">⚠️ Admin exists. Please login.</span>';
+                } else {
+                    messageDiv.innerHTML = `<span style="color: #ef4444;">❌ ${error.message}</span>`;
+                }
+            }
+        };
+
+        // Login
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('adminEmail').value;
             const password = document.getElementById('adminPassword').value;
-            const errorDiv = document.getElementById('loginError');
-
+            const messageDiv = document.getElementById('loginMessage');
+            
+            messageDiv.innerHTML = '<span style="color: #667eea;">🔐 Logging in...</span>';
+            
             try {
                 const userCredential = await auth.signInWithEmailAndPassword(email, password);
                 const user = userCredential.user;
                 
-                // Check if user is admin (you can maintain an admin list in database)
                 const adminCheck = await database.ref(`admins/${user.uid}`).once('value');
                 if (!adminCheck.exists()) {
                     await auth.signOut();
-                    throw new Error('Unauthorized access');
+                    throw new Error('Not authorized');
                 }
                 
                 currentAdmin = user;
-                document.getElementById('adminEmailDisplay').innerText = user.email;
                 document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 
-                loadDashboard();
-                loadLabours();
-                loadVerificationQueue();
-                loadContent();
+                await loadAllData();
+                setupListeners();
                 
-                // Real-time listeners
-                setupRealtimeListeners();
+                Swal.fire('Welcome!', 'Logged in successfully', 'success');
             } catch (error) {
-                errorDiv.innerText = error.message;
+                messageDiv.innerHTML = `<span style="color: #ef4444;">❌ ${error.message}</span>`;
             }
         });
 
-        // Navigation
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
-                
-                const tab = item.dataset.tab;
-                document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-                
-                switch(tab) {
-                    case 'dashboard':
-                        document.getElementById('dashboardSection').classList.add('active');
-                        document.getElementById('pageTitle').innerText = 'Dashboard';
-                        break;
-                    case 'labours':
-                        document.getElementById('laboursSection').classList.add('active');
-                        document.getElementById('pageTitle').innerText = 'Labour Management';
-                        loadLabours();
-                        break;
-                    case 'verification':
-                        document.getElementById('verificationSection').classList.add('active');
-                        document.getElementById('pageTitle').innerText = 'Verification Queue';
-                        loadVerificationQueue();
-                        break;
-                    case 'content':
-                        document.getElementById('contentSection').classList.add('active');
-                        document.getElementById('pageTitle').innerText = 'Content Moderation';
-                        loadContent();
-                        break;
-                }
-            });
-        });
-
-        // Search functionality
-        document.getElementById('searchLabour')?.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('#laboursList .labour-card');
-            cards.forEach(card => {
-                const name = card.dataset.name?.toLowerCase() || '';
-                const phone = card.dataset.phone?.toLowerCase() || '';
-                if (name.includes(searchTerm) || phone.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-
-        // Load Dashboard Stats
-        async function loadDashboard() {
-            try {
-                const laboursSnapshot = await database.ref('labours').once('value');
-                const labours = laboursSnapshot.val() || {};
-                const laboursArray = Object.values(labours);
-                
-                const total = laboursArray.length;
-                const verified = laboursArray.filter(l => l.isVerified === true).length;
-                const pending = laboursArray.filter(l => !l.isVerified).length;
-                
-                const contentSnapshot = await database.ref('user_content').once('value');
-                const content = contentSnapshot.val() || {};
-                const totalContent = Object.keys(content).length;
-                
-                document.getElementById('totalLabours').innerText = total;
-                document.getElementById('verifiedLabours').innerText = verified;
-                document.getElementById('pendingLabours').innerText = pending;
-                document.getElementById('totalContent').innerText = totalContent;
-                
-                // Update chart
-                if (chart) chart.destroy();
-                const ctx = document.getElementById('verificationChart').getContext('2d');
-                chart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Verified', 'Pending', 'Total'],
-                        datasets: [{
-                            data: [verified, pending, total],
-                            backgroundColor: ['#10b981', '#f59e0b', '#3b82f6']
-                        }]
-                    }
-                });
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-            }
+        // Load all data
+        async function loadAllData() {
+            await loadDashboard();
+            await loadLabours();
+            await loadVerificationQueue();
+            await loadCategories();
+            await loadContent();
+            await loadUsers();
+            await loadBannedUsers();
         }
 
-        // Load All Labours
-        async function loadLabours() {
-            try {
-                const snapshot = await database.ref('labours').once('value');
-                const labours = snapshot.val() || {};
-                const container = document.getElementById('laboursList');
-                container.innerHTML = '';
-                
-                Object.entries(labours).forEach(([id, labour]) => {
-                    const card = createLabourCard(id, labour);
-                    container.appendChild(card);
+        // Navigation
+        function setupNavigation() {
+            // Desktop navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    switchTab(item.dataset.tab);
+                    if (window.innerWidth < 768) closeSidebar();
                 });
-            } catch (error) {
-                console.error('Error loading labours:', error);
+            });
+            
+            // Mobile bottom navigation
+            document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelectorAll('.mobile-nav-item').forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    switchTab(item.dataset.tab);
+                });
+            });
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+            document.getElementById(`${tab}Section`).classList.add('active');
+            
+            const titles = {
+                dashboard: '📊 Dashboard',
+                labours: '👥 Labour Management',
+                verification: '⏳ Verification Queue',
+                categories: '📁 Categories',
+                content: '📰 Content Moderation',
+                users: '👤 User Management',
+                banned: '🚫 Banned Users',
+                settings: '⚙️ Settings'
+            };
+            document.getElementById('pageTitle').innerText = titles[tab] || 'Dashboard';
+        }
+
+        // Load Dashboard
+        async function loadDashboard() {
+            const laboursSnap = await database.ref('labours').once('value');
+            const labours = laboursSnap.val() || {};
+            const laboursArray = Object.values(labours);
+            
+            const total = laboursArray.length;
+            const verified = laboursArray.filter(l => l.isVerified === true).length;
+            const pending = total - verified;
+            
+            const usersSnap = await database.ref('users').once('value');
+            const users = usersSnap.val() || {};
+            const totalUsers = Object.keys(users).length;
+            
+            const bannedSnap = await database.ref('banned_users').once('value');
+            const banned = bannedSnap.val() || {};
+            const bannedCount = Object.keys(banned).length;
+            
+            const contentSnap = await database.ref('user_content').once('value');
+            const content = contentSnap.val() || {};
+            const totalContent = Object.keys(content).length;
+            
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div class="stat-info"><h3>${total}</h3><p>Labours</p></div><div class="stat-emoji">👷</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>${verified}</h3><p>Verified</p></div><div class="stat-emoji">✅</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>${pending}</h3><p>Pending</p></div><div class="stat-emoji">⏳</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>${totalUsers}</h3><p>Users</p></div><div class="stat-emoji">👤</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>${bannedCount}</h3><p>Banned</p></div><div class="stat-emoji">🚫</div></div>
+                <div class="stat-card"><div class="stat-info"><h3>${totalContent}</h3><p>Posts</p></div><div class="stat-emoji">📰</div></div>
+            `;
+            
+            document.getElementById('pendingCount').innerText = pending;
+            document.getElementById('bannedCount').innerText = bannedCount;
+            document.getElementById('mobilePendingBadge').innerText = pending;
+            
+            if (verificationChart) verificationChart.destroy();
+            const ctx = document.getElementById('verificationChart').getContext('2d');
+            verificationChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: { labels: ['Verified', 'Pending'], datasets: [{ data: [verified, pending], backgroundColor: ['#10b981', '#f59e0b'] }] },
+                options: { responsive: true, maintainAspectRatio: true }
+            });
+            
+            const recentDiv = document.getElementById('recentActivity');
+            recentDiv.innerHTML = laboursArray.slice(-5).reverse().map(l => `
+                <div style="padding: 12px; border-bottom: 1px solid #e2e8f0;">
+                    <strong>👤 ${l.name} ${l.lastName}</strong><br>
+                    <small>📁 ${l.category} • ${l.isVerified ? '✅ Verified' : '⏳ Pending'}</small>
+                </div>
+            `).join('');
+        }
+
+        // Load Labours (Both Table and Cards)
+        async function loadLabours() {
+            const snapshot = await database.ref('labours').once('value');
+            const labours = snapshot.val() || {};
+            
+            // Desktop Table
+            const tableBody = document.getElementById('laboursTable');
+            tableBody.innerHTML = '';
+            
+            // Mobile Cards
+            const cardsContainer = document.getElementById('laboursCards');
+            cardsContainer.innerHTML = '';
+            
+            for (const [id, labour] of Object.entries(labours)) {
+                const isBanned = await checkIfBanned(id);
+                
+                // Add to table
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${labour.name} ${labour.lastName}${isBanned ? ' 🚫' : ''}</td>
+                    <td>${labour.phone}</td>
+                    <td>${labour.category}</td>
+                    <td>₹${labour.hourlyRate}</td>
+                    <td><span class="status-badge ${labour.isVerified ? 'status-verified' : 'status-pending'}">${labour.isVerified ? '✅' : '⏳'}</span></td>
+                    <td>
+                        <button class="btn-sm btn-view" onclick="viewLabour('${id}')">👁️</button>
+                        ${!labour.isVerified ? `<button class="btn-sm btn-verify" onclick="verifyLabour('${id}')">✅</button>` : ''}
+                        ${!isBanned ? `<button class="btn-sm btn-ban" onclick="banUser('${id}')">🚫</button>` : `<button class="btn-sm btn-unban" onclick="unbanUser('${id}')">🔓</button>`}
+                     </td>
+                `;
+                
+                // Add to cards (mobile)
+                const card = document.createElement('div');
+                card.className = 'labour-card';
+                card.innerHTML = `
+                    <h4>${labour.name} ${labour.lastName} ${isBanned ? '🚫' : ''}</h4>
+                    <div class="labour-info"><span>📱 ${labour.phone}</span></div>
+                    <div class="labour-info"><span>📁 ${labour.category}</span></div>
+                    <div class="labour-info"><span>💰 ₹${labour.hourlyRate}/hr</span></div>
+                    <div><span class="status-badge ${labour.isVerified ? 'status-verified' : 'status-pending'}">${labour.isVerified ? 'Verified' : 'Pending'}</span></div>
+                    <div class="action-buttons">
+                        <button class="btn-sm btn-view" onclick="viewLabour('${id}')">👁️ View</button>
+                        ${!labour.isVerified ? `<button class="btn-sm btn-verify" onclick="verifyLabour('${id}')">✅ Verify</button>` : ''}
+                        ${!isBanned ? `<button class="btn-sm btn-ban" onclick="banUser('${id}')">🚫 Ban</button>` : `<button class="btn-sm btn-unban" onclick="unbanUser('${id}')">🔓 Unban</button>`}
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
             }
         }
 
         // Load Verification Queue
         async function loadVerificationQueue() {
-            try {
-                const snapshot = await database.ref('labours').orderByChild('isVerified').equalTo(false).once('value');
-                const labours = snapshot.val() || {};
-                const container = document.getElementById('verificationList');
-                container.innerHTML = '';
-                
-                if (Object.keys(labours).length === 0) {
-                    container.innerHTML = '<div style="text-align: center; padding: 40px;">No pending verifications</div>';
-                    return;
-                }
-                
-                Object.entries(labours).forEach(([id, labour]) => {
-                    const card = createLabourCard(id, labour, true);
-                    container.appendChild(card);
-                });
-            } catch (error) {
-                console.error('Error loading verification queue:', error);
-            }
-        }
-
-        // Create Labour Card
-        function createLabourCard(id, labour, showVerify = false) {
-            const card = document.createElement('div');
-            card.className = 'labour-card';
-            card.dataset.name = `${labour.name} ${labour.lastName}`;
-            card.dataset.phone = labour.phone;
+            const snapshot = await database.ref('labours').orderByChild('isVerified').equalTo(false).once('value');
+            const labours = snapshot.val() || {};
             
-            card.innerHTML = `
-                <div class="labour-header">
+            const tableBody = document.getElementById('verificationTable');
+            tableBody.innerHTML = '';
+            const cardsContainer = document.getElementById('verificationCards');
+            cardsContainer.innerHTML = '';
+            
+            for (const [id, labour] of Object.entries(labours)) {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${labour.name} ${labour.lastName}</td>
+                    <td>${labour.phone}</td>
+                    <td>
+                        ${labour.aadharCardUrl ? '<button class="btn-sm btn-view" onclick="showImage(\'' + labour.aadharCardUrl + '\')">🆔</button>' : '❌'}
+                        ${labour.voterIdUrl ? '<button class="btn-sm btn-view" onclick="showImage(\'' + labour.voterIdUrl + '\')">🗳️</button>' : '❌'}
+                    </td>
+                    <td>
+                        <button class="btn-sm btn-verify" onclick="verifyLabour('${id}')">✅</button>
+                        <button class="btn-sm btn-reject" onclick="rejectLabour('${id}')">❌</button>
+                    </td>
+                `;
+                
+                const card = document.createElement('div');
+                card.className = 'labour-card';
+                card.innerHTML = `
                     <h4>${labour.name} ${labour.lastName}</h4>
-                    <div class="verification-badge">
-                        ${labour.isVerified ? '<i class="fas fa-check-circle"></i> Verified' : '<i class="fas fa-clock"></i> Pending'}
-                    </div>
-                </div>
-                <div class="labour-body">
-                    <div class="labour-info">
-                        <i class="fas fa-phone"></i>
-                        <span>${labour.phone}</span>
-                    </div>
-                    <div class="labour-info">
-                        <i class="fas fa-envelope"></i>
-                        <span>${labour.email || 'Not provided'}</span>
-                    </div>
-                    <div class="labour-info">
-                        <i class="fas fa-tag"></i>
-                        <span>${labour.category || 'N/A'}</span>
-                    </div>
-                    <div class="labour-info">
-                        <i class="fas fa-rupee-sign"></i>
-                        <span>₹${labour.hourlyRate || 0}/hr</span>
-                    </div>
-                    <div class="labour-info">
-                        <i class="fas fa-briefcase"></i>
-                        <span>${labour.experience || 0} years exp</span>
-                    </div>
-                    <div class="skills">
-                        ${(labour.skills || []).map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
-                    </div>
-                    ${labour.bio ? `<p style="margin-top: 10px; font-size: 12px; color: #666;">${labour.bio}</p>` : ''}
-                    <div class="image-preview">
-                        ${labour.profileImageUrl ? `<img src="${labour.profileImageUrl}" onclick="showImage('${labour.profileImageUrl}')">` : ''}
-                        ${(labour.workImages || []).slice(0, 2).map(img => `<img src="${img}" onclick="showImage('${img}')">`).join('')}
-                    </div>
+                    <div class="labour-info"><span>📱 ${labour.phone}</span></div>
+                    <div class="labour-info"><span>📁 ${labour.category}</span></div>
                     <div class="action-buttons">
-                        ${showVerify ? `
-                            <button class="btn-verify" onclick="verifyLabour('${id}')">
-                                <i class="fas fa-check"></i> Verify
-                            </button>
-                            <button class="btn-reject" onclick="rejectLabour('${id}')">
-                                <i class="fas fa-times"></i> Reject
-                            </button>
-                        ` : ''}
-                        <button class="btn-view" onclick="viewLabourDetails('${id}')">
-                            <i class="fas fa-eye"></i> View Details
-                        </button>
+                        <button class="btn-sm btn-verify" onclick="verifyLabour('${id}')">✅ Verify</button>
+                        <button class="btn-sm btn-reject" onclick="rejectLabour('${id}')">❌ Reject</button>
+                        <button class="btn-sm btn-view" onclick="viewLabour('${id}')">👁️ View</button>
                     </div>
-                </div>
-            `;
-            return card;
+                `;
+                cardsContainer.appendChild(card);
+            }
         }
 
-        // Verify Labour
-        window.verifyLabour = async (id) => {
-            if (confirm('Are you sure you want to verify this labour?')) {
-                try {
-                    await database.ref(`labours/${id}`).update({ isVerified: true });
-                    await database.ref(`users/${id}`).update({ type: 'VERIFIED_LABOUR' });
-                    alert('Labour verified successfully!');
-                    loadVerificationQueue();
-                    loadLabours();
-                    loadDashboard();
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                }
-            }
-        };
-
-        // Reject Labour
-        window.rejectLabour = async (id) => {
-            if (confirm('Are you sure you want to reject this labour?')) {
-                try {
-                    await database.ref(`labours/${id}`).remove();
-                    await database.ref(`users/${id}`).remove();
-                    alert('Labour rejected and removed!');
-                    loadVerificationQueue();
-                    loadLabours();
-                    loadDashboard();
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                }
-            }
-        };
-
-        // View Labour Details
-        window.viewLabourDetails = async (id) => {
-            const snapshot = await database.ref(`labours/${id}`).once('value');
-            const labour = snapshot.val();
+        // Load Categories
+        async function loadCategories() {
+            const snapshot = await database.ref('categories').once('value');
+            const categories = snapshot.val() || {};
+            const container = document.getElementById('categoriesList');
+            container.innerHTML = '';
             
-            const modalHtml = `
-                <div class="modal" id="detailModal" style="display: flex;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3>Labour Details</h3>
-                            <span class="close-modal" onclick="closeDetailModal()">&times;</span>
-                        </div>
-                        <div style="max-height: 60vh; overflow-y: auto;">
-                            <p><strong>Name:</strong> ${labour.name} ${labour.lastName}</p>
-                            <p><strong>Username:</strong> ${labour.username}</p>
-                            <p><strong>Phone:</strong> ${labour.phone}</p>
-                            <p><strong>Email:</strong> ${labour.email || 'N/A'}</p>
-                            <p><strong>Category:</strong> ${labour.category}</p>
-                            <p><strong>Hourly Rate:</strong> ₹${labour.hourlyRate}</p>
-                            <p><strong>Experience:</strong> ${labour.experience} years</p>
-                            <p><strong>Skills:</strong> ${(labour.skills || []).join(', ')}</p>
-                            <p><strong>Bio:</strong> ${labour.bio || 'N/A'}</p>
-                            <p><strong>Verified:</strong> ${labour.isVerified ? 'Yes' : 'No'}</p>
-                            <p><strong>Created:</strong> ${new Date(labour.createdAt).toLocaleString()}</p>
-                            <hr style="margin: 15px 0;">
-                            <h4>Documents</h4>
-                            ${labour.aadharCardUrl ? `<p><strong>Aadhar Card:</strong> <a href="${labour.aadharCardUrl}" target="_blank">View</a></p>` : ''}
-                            ${labour.voterIdUrl ? `<p><strong>Voter ID:</strong> <a href="${labour.voterIdUrl}" target="_blank">View</a></p>` : ''}
-                            <h4>Work Portfolio</h4>
-                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                ${(labour.workImages || []).map(img => `<img src="${img}" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; cursor: pointer;" onclick="showImage('${img}')">`).join('')}
-                            </div>
-                        </div>
+            for (const [id, category] of Object.entries(categories)) {
+                const div = document.createElement('div');
+                div.className = 'category-item';
+                div.innerHTML = `
+                    <div><span style="font-size: 24px;">${category.icon || '📁'}</span> <strong>${category.name}</strong></div>
+                    <button class="btn-sm btn-reject" onclick="deleteCategory('${id}')">🗑️</button>
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        // Load Users
+        async function loadUsers() {
+            const snapshot = await database.ref('users').once('value');
+            const users = snapshot.val() || {};
+            const tableBody = document.getElementById('usersTable');
+            tableBody.innerHTML = '';
+            const cardsContainer = document.getElementById('usersCards');
+            cardsContainer.innerHTML = '';
+            
+            for (const [id, user] of Object.entries(users)) {
+                const isBanned = await checkIfBanned(id);
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${user.name || 'N/A'} ${user.lastName || ''}</td>
+                    <td>${user.email}</td>
+                    <td><span class="status-badge ${user.type === 'LABOUR' ? 'status-verified' : 'status-pending'}">${user.type || 'USER'}</span></td>
+                    <td><span class="status-badge ${isBanned ? 'status-banned' : 'status-verified'}">${isBanned ? '🚫 Banned' : '✅ Active'}</span></td>
+                    <td>
+                        ${!isBanned ? `<button class="btn-sm btn-ban" onclick="banUser('${id}')">🚫</button>` : `<button class="btn-sm btn-unban" onclick="unbanUser('${id}')">🔓</button>`}
+                        <button class="btn-sm btn-reject" onclick="deleteUser('${id}')">🗑️</button>
+                     </td>
+                `;
+                
+                const card = document.createElement('div');
+                card.className = 'labour-card';
+                card.innerHTML = `
+                    <h4>${user.name || 'N/A'} ${user.lastName || ''}</h4>
+                    <div class="labour-info"><span>📧 ${user.email}</span></div>
+                    <div><span class="status-badge ${isBanned ? 'status-banned' : 'status-verified'}">${isBanned ? 'Banned' : 'Active'}</span></div>
+                    <div class="action-buttons">
+                        ${!isBanned ? `<button class="btn-sm btn-ban" onclick="banUser('${id}')">🚫 Ban</button>` : `<button class="btn-sm btn-unban" onclick="unbanUser('${id}')">🔓 Unban</button>`}
+                        <button class="btn-sm btn-reject" onclick="deleteUser('${id}')">🗑️ Delete</button>
                     </div>
-                </div>
-            `;
+                `;
+                cardsContainer.appendChild(card);
+            }
+        }
+
+        // Load Banned Users
+        async function loadBannedUsers() {
+            const snapshot = await database.ref('banned_users').once('value');
+            const banned = snapshot.val() || {};
+            const tableBody = document.getElementById('bannedTable');
+            tableBody.innerHTML = '';
+            const cardsContainer = document.getElementById('bannedCards');
+            cardsContainer.innerHTML = '';
             
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-        };
+            for (const [id, data] of Object.entries(banned)) {
+                const userSnap = await database.ref(`users/${id}`).once('value');
+                const user = userSnap.val() || {};
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${user.name || 'N/A'} ${user.lastName || ''}</td>
+                    <td>${user.email}</td>
+                    <td>${new Date(data.bannedAt).toLocaleDateString()}</td>
+                    <td>
+                        <button class="btn-sm btn-unban" onclick="unbanUser('${id}')">🔓 Unban</button>
+                        <button class="btn-sm btn-reject" onclick="deleteUser('${id}')">🗑️</button>
+                     </td>
+                `;
+                
+                const card = document.createElement('div');
+                card.className = 'labour-card';
+                card.innerHTML = `
+                    <h4>${user.name || 'N/A'} ${user.lastName || ''}</h4>
+                    <div class="labour-info"><span>📧 ${user.email}</span></div>
+                    <div class="action-buttons">
+                        <button class="btn-sm btn-unban" onclick="unbanUser('${id}')">🔓 Unban</button>
+                        <button class="btn-sm btn-reject" onclick="deleteUser('${id}')">🗑️ Delete</button>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
+            }
+        }
 
         // Load Content
         async function loadContent() {
-            try {
-                const snapshot = await database.ref('user_content').once('value');
-                const contents = snapshot.val() || {};
-                const container = document.getElementById('contentList');
-                container.innerHTML = '';
-                
-                Object.entries(contents).forEach(([id, content]) => {
-                    const card = document.createElement('div');
-                    card.className = 'content-card';
-                    card.innerHTML = `
-                        <div class="content-header">
-                            <div>
-                                <div class="content-title">${content.title}</div>
-                                <div style="font-size: 12px; color: #666; margin-top: 5px;">
-                                    <i class="fas fa-user"></i> ${content.user_email}
-                                </div>
-                            </div>
-                            <span class="content-status ${content.status === 'active' ? 'status-active' : 'status-pending'}">
-                                ${content.status || 'pending'}
-                            </span>
-                        </div>
-                        <p style="margin: 10px 0; color: #555;">${content.description}</p>
-                        ${content.image_url ? `<img src="${content.image_url}" style="max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 10px; cursor: pointer;" onclick="showImage('${content.image_url}')">` : ''}
-                        <div style="margin-top: 10px;">
-                            <button class="btn-verify" style="background: #10b981; padding: 5px 12px; margin-right: 5px;" onclick="approveContent('${id}')">Approve</button>
-                            <button class="btn-reject" style="padding: 5px 12px;" onclick="rejectContent('${id}')">Delete</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (error) {
-                console.error('Error loading content:', error);
-            }
-        }
-
-        // Approve Content
-        window.approveContent = async (id) => {
-            try {
-                await database.ref(`user_content/${id}`).update({ status: 'active' });
-                alert('Content approved!');
-                loadContent();
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        };
-
-        // Reject/Delete Content
-        window.rejectContent = async (id) => {
-            if (confirm('Delete this content?')) {
-                try {
-                    await database.ref(`user_content/${id}`).remove();
-                    alert('Content deleted!');
-                    loadContent();
-                } catch (error) {
-                    alert('Error: ' + error.message);
-                }
-            }
-        };
-
-        // Image Modal
-        window.showImage = (url) => {
-            const modal = document.getElementById('imageModal');
-            const img = document.getElementById('modalImage');
-            img.src = url;
-            modal.style.display = 'flex';
-        };
-
-        window.closeImageModal = () => {
-            document.getElementById('imageModal').style.display = 'none';
-        };
-
-        window.closeDetailModal = () => {
-            const modal = document.getElementById('detailModal');
-            if (modal) modal.remove();
-        };
-
-        // Real-time listeners
-        function setupRealtimeListeners() {
-            database.ref('labours').on('value', () => {
-                if (document.getElementById('dashboardSection').classList.contains('active')) {
-                    loadDashboard();
-                }
-                if (document.getElementById('laboursSection').classList.contains('active')) {
-                    loadLabours();
-                }
-                if (document.getElementById('verificationSection').classList.contains('active')) {
-                    loadVerificationQueue();
-                }
-            });
+            const snapshot = await database.ref('user_content').once('value');
+            const contents = snapshot.val() || {};
+            const container = document.getElementById('contentList');
+            container.innerHTML = '';
             
-            database.ref('user_content').on('value', () => {
-                if (document.getElementById('contentSection').classList.contains('active')) {
-                    loadContent();
-                }
-                if (document.getElementById('dashboardSection').classList.contains('active')) {
-                    loadDashboard();
-                }
-            });
+            for (const [id, content] of Object.entries(contents)) {
+                const div = document.createElement('div');
+                div.className = 'labour-card';
+                div.innerHTML = `
+                    <h4>📝 ${content.title}</h4>
+                    <div class="labour-info"><span>👤 ${content.user_email}</span></div>
+                    <p style="margin: 8px 0;">${content.description}</p>
+                    ${content.image_url ? `<img src="${content.image_url}" style="max-width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin: 8px 0; cursor: pointer;" onclick="showImage('${content.image_url}')">` : ''}
+                    <div class="action-buttons">
+                        <button class="btn-sm btn-reject" onclick="deleteContent('${id}')">🗑️ Delete</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            }
         }
 
-        // Logout
+        // Helper Functions
+        async function checkIfBanned(uid) {
+            const snapshot = await database.ref(`banned_users/${uid}`).once('value');
+            return snapshot.exists();
+        }
+
+        // Action Functions
+        window.verifyLabour = async (id) => {
+            const result = await Swal.fire({ title: 'Verify?', text: 'Confirm verification?', icon: 'question', showCancelButton: true });
+            if (result.isConfirmed) {
+                await database.ref(`labours/${id}`).update({ isVerified: true, verifiedAt: Date.now() });
+                await database.ref(`users/${id}`).update({ type: 'VERIFIED_LABOUR' });
+                Swal.fire('Verified!', '', 'success');
+                loadAllData();
+            }
+        };
+
+        window.rejectLabour = async (id) => {
+            const result = await Swal.fire({ title: 'Reject?', text: 'Remove this labour?', icon: 'warning', showCancelButton: true });
+            if (result.isConfirmed) {
+                await database.ref(`labours/${id}`).remove();
+                await database.ref(`users/${id}`).remove();
+                Swal.fire('Rejected!', '', 'success');
+                loadAllData();
+            }
+        };
+
+        window.banUser = async (uid) => {
+            const result = await Swal.fire({ title: 'Ban User?', text: 'Ban this user?', icon: 'warning', showCancelButton: true });
+            if (result.isConfirmed) {
+                await database.ref(`banned_users/${uid}`).set({ bannedAt: Date.now(), bannedBy: currentAdmin?.email });
+                await database.ref(`users/${uid}`).update({ status: 'banned' });
+                Swal.fire('Banned!', '', 'success');
+                loadAllData();
+            }
+        };
+
+        window.unbanUser = async (uid) => {
+            await database.ref(`banned_users/${uid}`).remove();
+            await database.ref(`users/${uid}`).update({ status: 'active' });
+            Swal.fire('Unbanned!', '', 'success');
+            loadAllData();
+        };
+
+        window.deleteUser = async (id) => {
+            const result = await Swal.fire({ title: 'Delete?', text: 'Permanent deletion!', icon: 'error', showCancelButton: true });
+            if (result.isConfirmed) {
+                await database.ref(`users/${id}`).remove();
+                await database.ref(`banned_users/${id}`).remove();
+                Swal.fire('Deleted!', '', 'success');
+                loadAllData();
+            }
+        };
+
+        window.deleteContent = async (id) => {
+            const result = await Swal.fire({ title: 'Delete?', text: 'Remove this content?', icon: 'warning', showCancelButton: true });
+            if (result.isConfirmed) {
+                await database.ref(`user_content/${id}`).remove();
+                Swal.fire('Deleted!', '', 'success');
+                loadContent();
+            }
+        };
+
+        window.addCategory = async () => {
+            const name = document.getElementById('categoryName').value;
+            const icon = document.getElementById('categoryIcon').value;
+            if (!name) { Swal.fire('Error', 'Enter category name', 'error'); return; }
+            await database.ref('categories').push({ name, icon: icon || '📁', createdAt: Date.now() });
+            Swal.fire('Added!', '', 'success');
+            closeModal('categoryModal');
+            loadCategories();
+        };
+
+        window.deleteCategory = async (id) => {
+            const result = await Swal.fire({ title: 'Delete?', text: 'Remove category?', icon: 'warning', showCancelButton: true });
+            if (result.isConfirmed) {
+                await database.ref(`categories/${id}`).remove();
+                Swal.fire('Deleted!', '', 'success');
+                loadCategories();
+            }
+        };
+
+        window.viewLabour = async (id) => {
+            const snapshot = await database.ref(`labours/${id}`).once('value');
+            const labour = snapshot.val();
+            const content = document.getElementById('detailsContent');
+            content.innerHTML = `
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 16px; border-radius: 12px; color: white; margin-bottom: 16px;">
+                    <h3>👤 ${labour.name} ${labour.lastName}</h3>
+                    <p>@${labour.username}</p>
+                </div>
+                <p><strong>📱 Phone:</strong> ${labour.phone}</p>
+                <p><strong>📧 Email:</strong> ${labour.email || 'N/A'}</p>
+                <p><strong>📁 Category:</strong> ${labour.category}</p>
+                <p><strong>💰 Rate:</strong> ₹${labour.hourlyRate}/hr</p>
+                <p><strong>🎓 Experience:</strong> ${labour.experience} years</p>
+                <p><strong>🔧 Skills:</strong> ${(labour.skills || []).join(', ')}</p>
+                <p><strong>✅ Status:</strong> ${labour.isVerified ? 'Verified ✓' : 'Pending ⏳'}</p>
+                <hr>
+                <h4>🖼️ Portfolio</h4>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    ${(labour.workImages || []).map(img => `<img src="${img}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer;" onclick="showImage('${img}')">`).join('')}
+                </div>
+            `;
+            document.getElementById('detailsModal').style.display = 'flex';
+        };
+
+        window.showImage = (url) => {
+            document.getElementById('previewImage').src = url;
+            document.getElementById('imageModal').style.display = 'flex';
+        };
+
+        window.showAddCategoryModal = () => {
+            document.getElementById('categoryName').value = '';
+            document.getElementById('categoryIcon').value = '📁';
+            document.getElementById('categoryModal').style.display = 'flex';
+        };
+
+        window.closeModal = (id) => {
+            document.getElementById(id).style.display = 'none';
+        };
+
+        window.saveSettings = () => {
+            Swal.fire('Saved!', 'Settings saved', 'success');
+        };
+
+        window.toggleSidebar = () => {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        };
+
+        window.closeSidebar = () => {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('active');
+        };
+
         window.logout = async () => {
             await auth.signOut();
             location.reload();
         };
 
-        // Close modal on outside click
-        window.onclick = (event) => {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        };
+        // Search
+        document.getElementById('searchLabour')?.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('#laboursCards .labour-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        function setupListeners() {
+            database.ref('labours').on('value', () => {
+                if (document.getElementById('dashboardSection').classList.contains('active')) loadDashboard();
+                if (document.getElementById('laboursSection').classList.contains('active')) loadLabours();
+                if (document.getElementById('verificationSection').classList.contains('active')) loadVerificationQueue();
+            });
+        }
+
+        // Initialize
+        setupNavigation();
     </script>
 </body>
 </html>
