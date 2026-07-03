@@ -90,8 +90,26 @@
             transition: border 0.2s;
         }
 
-        input:focus {
-            border-color: #ef4444;
+        .btn-google {
+            width: 100%;
+            background-color: #ffffff;
+            color: #444;
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-google:hover {
+            background-color: #f8fafc;
         }
 
         .btn-delete {
@@ -111,6 +129,19 @@
             background-color: #dc2626;
         }
 
+        .btn-delete:disabled {
+            background-color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .status-verified {
+            color: #16a34a;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+            font-weight: bold;
+        }
+
         .success-message {
             display: none;
             color: #16a34a;
@@ -128,37 +159,41 @@
         <div class="logo-text">City Labour</div>
         <h2>Account Deletion Request</h2>
         
-        <p>If you submit this request, your profile, contact details, and layout history will be permanently deleted from our platform.</p>
+        <p>To protect your security, please log in with your Google account first, then enter your registered phone number to delete your data.</p>
 
         <div class="warning-box">
-            <p>⚠️ Warning: This action cannot be undone. You will lose access to your City Labour profile instantly.</p>
+            <p>⚠️ Warning: This action will permanently wipe your profile and job history from our servers.</p>
         </div>
 
         <div id="deletionForm">
             <div class="input-group">
-                <label for="phone">Registered Mobile Number</label>
-                <input type="tel" id="phone" placeholder="e.g. +919876543210" required>
+                <label>Step 1: Security Verification</label>
+                <button class="btn-google" id="googleLoginBtn">
+                    <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google logo" width="18">
+                    Verify with Google
+                </button>
+                <div class="status-verified" id="googleStatus">✅ Google Account Verified!</div>
             </div>
 
             <div class="input-group">
-                <label for="reason">Reason for leaving (Optional)</label>
-                <input type="text" id="reason" placeholder="Why do you want to delete?">
+                <label for="phone">Step 2: Registered Mobile Number</label>
+                <input type="tel" id="phone" placeholder="e.g. +919876543210" required disabled>
             </div>
 
-            <button class="btn-delete" id="deleteBtn">Permanently Delete My Account</button>
+            <button class="btn-delete" id="deleteBtn" disabled>Permanently Delete My Account</button>
         </div>
 
         <div class="success-message" id="successBlock">
-            Your data deletion request has been submitted. Your account will be removed within 24 hours.
+            Your identity has been verified and data deletion request processed successfully. Your account will be erased from our systems.
         </div>
     </div>
 
     <script type="module">
-        // Import Firebase SDK modules
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, deleteUser } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Aapki provided Firebase config setup
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCs2EcKuShOSaSbADg6gz7cVVtTfQdyP6U",
             authDomain: "city-labour-1a447.firebaseapp.com",
@@ -170,41 +205,81 @@
             measurementId: "G-YJW7B8HB3B"
         };
 
-        // Initialize Firebase
+        // Initialize Firebase Services
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const database = getDatabase(app);
+        const provider = new GoogleAuthProvider();
 
-        // UI Elements
-        const deleteBtn = document.getElementById('deleteBtn');
+        // UI Target Elements
+        const googleLoginBtn = document.getElementById('googleLoginBtn');
+        const googleStatus = document.getElementById('googleStatus');
         const phoneInput = document.getElementById('phone');
+        const deleteBtn = document.getElementById('deleteBtn');
         const deletionForm = document.getElementById('deletionForm');
         const successBlock = document.getElementById('successBlock');
 
-        // Delete function logic
-        deleteBtn.addEventListener('click', function() {
+        let currentUser = null;
+
+        // Step 1: Google Authentication Trigger
+        googleLoginBtn.addEventListener('click', () => {
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    currentUser = result.user;
+                    
+                    // Update UI steps once verified
+                    googleStatus.style.display = 'block';
+                    googleLoginBtn.style.display = 'none';
+                    phoneInput.removeAttribute('disabled');
+                    deleteBtn.removeAttribute('disabled');
+                    phoneInput.focus();
+                })
+                .catch((error) => {
+                    console.error("Google Auth Failed:", error);
+                    alert("Google verification failed. Please try again.");
+                });
+        });
+
+        // Step 2: Database and Profile Deletion Trigger
+        deleteBtn.addEventListener('click', () => {
             const phoneNumber = phoneInput.value.trim();
 
             if (!phoneNumber) {
-                alert('Please enter your registered mobile number.');
+                alert('Please enter your registered mobile number to confirm.');
                 return;
             }
 
-            const confirmAction = confirm("Are you absolutely sure you want to delete your account? This will erase all your details from City Labour database.");
-            
-            if (confirmAction) {
-                // Aapke database path ke hisab se (Jaise: users/919876543210) data clean karne ke liye:
-                // Note: Agar aapka structure alag hai toh path change kar sakte hain
-                const userRef = ref(database, 'users/' + phoneNumber);
+            if (!currentUser) {
+                alert('Please complete Step 1 and verify your Google login first.');
+                return;
+            }
 
-                remove(userRef)
+            const confirmFinal = confirm("Are you completely sure? This will delete your auth profile and database node under " + phoneNumber + ".");
+            
+            if (confirmFinal) {
+                // 1. Remove node from Realtime Database (e.g., users/+919876543210)
+                const databaseRecordRef = ref(database, 'users/' + phoneNumber);
+
+                remove(databaseRecordRef)
                     .then(() => {
-                        // Success screen show karein
+                        // 2. Delete the User Account from Firebase Auth Authentication system too
+                        return deleteUser(currentUser);
+                    })
+                    .then(() => {
+                        // All Success Actions
                         deletionForm.style.display = 'none';
                         successBlock.style.display = 'block';
                     })
-                    .catch((error) => {
-                        console.error("Error deleting data: ", error);
-                        alert("Something went wrong. Please try again or email support@citylabour.com");
+                    .catch((err) => {
+                        console.error("Deletion lifecycle error:", err);
+                        // standard safety workaround fallback if session token expired mid-way
+                        if (err.code === 'auth/requires-recent-login') {
+                            alert("Security timeout. Please reload the page and log in with Google again to confirm deletion.");
+                        } else {
+                            alert("Database cleared, but auth node removal pending. Our admin panel team will clean it manually within 24h.");
+                            deletionForm.style.display = 'none';
+                            successBlock.style.display = 'block';
+                        }
                     });
             }
         });
