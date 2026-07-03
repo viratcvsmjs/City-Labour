@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Labour - Feedback & Support Center</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --accent: #f59e0b;
+            --bg: #f4f6f8;
+            --surface: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --border: #e2e8f0;
+            --success: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #ffffff;
+            padding: 35px 30px;
+            border-bottom: 5px solid var(--accent);
+            text-align: center;
+        }
+
+        .header-banner h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+        }
+
+        .header-banner p {
+            color: #bfdbfe;
+            font-size: 15px;
+        }
+
+        .content-body {
+            padding: 30px;
+        }
+
+        .intro-text {
+            color: var(--text-light);
+            font-size: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        /* Contact Details Cards */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        @media (max-width: 600px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .contact-card {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .contact-card h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-group {
+            margin-bottom: 12px;
+        }
+
+        .info-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary-light);
+            word-break: break-all;
+        }
+
+        .info-value a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .info-value a:hover {
+            text-decoration: underline;
+        }
+
+        /* Interactive Live Form */
+        .feedback-form {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--primary-light);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* Toast Notification */
+        .toast {
+            display: none;
+            background: var(--success);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            font-style: italic;
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        <!-- Banner Header -->
+        <div class="header-banner">
+            <h1>City Labour</h1>
+            <p>Feedback & Support Dashboard</p>
+        </div>
+
+        <div class="content-body">
+            <p class="intro-text">
+                Your inputs are vital to building India's most secure and reliable daily-wage marketplace. Reach out to our teams or submit your issue below.
+            </p>
+
+            <!-- Success Alert Box -->
+            <div id="successToast" class="toast">
+                ✓ Thank you! Your feedback has been sent successfully.
+            </div>
+
+            <!-- Support Desks Info -->
+            <div class="section-title">Official Channels</div>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>📧 Email Desks</h3>
+                    <div class="info-group">
+                        <span class="info-label">Primary Support Desk</span>
+                        <span class="info-value"><a href="mailto:viratvansh0@gmail.com">viratvansh0@gmail.com</a></span>
+                    </div>
+                    <div class="info-group" style="margin-top: 12px;">
+                        <span class="info-label">Escalations Core</span>
+                        <span class="info-value"><a href="mailto:viratvansh9@gmail.com">viratvansh9@gmail.com</a></span>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3>🌐 Online Portals</h3>
+                    <div class="info-group">
+                        <span class="info-label">Feedback URL</span>
+                        <span class="info-value"><a href="https://www.citylabour.com/feedback" target="_blank">www.citylabour.com/feedback</a></span>
+                    </div>
+                    <div class="info-group" style="margin-top: 12px;">
+                        <span class="info-label">Main Platform Website</span>
+                        <span class="info-value"><a href="https://www.citylabour.com" target="_blank">www.citylabour.com</a></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Form -->
+            <div class="section-title">Submit Feedback Live</div>
+            <form id="feedbackForm" class="feedback-form" onsubmit="handleFormSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Registered Mobile Number *</label>
+                    <input type="tel" id="userPhone" class="form-input" placeholder="e.g. +91 98765 43210" required pattern="[0-9+\s\-]{10,15}">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Account Profile Status *</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="userRole" value="Customer" checked> Customer (Hiring Labor)
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="userRole" value="Worker"> Worker (Offering Skills)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Issue Category</label>
+                    <select id="issueCategory" class="form-select">
+                        <option value="General Suggestion">General Suggestion / Idea</option>
+                        <option value="App Bug">App Bug / Functional Error</option>
+                        <option value="Verification">Profile Verification Query</option>
+                        <option value="Payment">Payment Gateway Timeout</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description of Feedback *</label>
+                    <textarea id="issueDesc" class="form-textarea" rows="4" placeholder="Please describe what happened or what feature you want to add..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Send Secure Report</button>
+            </form>
+
+            <div class="footer-note">
+                Together, we are eliminating middleman exploitation and digitizing traditional labor chowks.
+            </div>
+        </div>
+    </div>
+
+    <!-- Embedded JavaScript logic -->
+    <script>
+        function handleFormSubmit(event) {
+            // Prevent standard browser page reload behavior
+            event.preventDefault();
+
+            // Collect values from the DOM inputs
+            const phone = document.getElementById('userPhone').value;
+            const role = document.querySelector('input[name="userRole"]:checked').value;
+            const category = document.getElementById('issueCategory').value;
+            const description = document.getElementById('issueDesc').value;
+
+            // Log parameters internally to simulate dashboard network transfer logs
+            console.log("--- City Labour Feedback Log ---");
+            console.log("Phone Number:", phone);
+            console.log("User Type   :", role);
+            console.log("Category    :", category);
+            console.log("Feedback    :", description);
+
+            // Dynamic interaction: display a clean response toast message
+            const toast = document.getElementById('successToast');
+            toast.style.display = 'block';
+
+            // Reset form entry fields
+            document.getElementById('feedbackForm').reset();
+
+            // Automatically hide toast banner after 4.5 seconds
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 4500);
+        }
+    </script>
+</body>
+</html>
