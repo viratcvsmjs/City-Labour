@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>City Labour</title>
+    <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: #f4f7fc;
+            color: #1e2a3a;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER */
+        header {
+            background: #0b1a2e;
+            color: #fff;
+            padding: 18px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #facc15;
+        }
+
+        .tagline {
+            font-size: 0.95rem;
+            color: #b0c4de;
+            margin-top: 2px;
+        }
+
+        nav a {
+            color: #e0e8f0;
+            margin-left: 28px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 1.05rem;
+        }
+        nav a:hover {
+            color: #facc15;
+        }
+        nav a i {
+            margin-right: 6px;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #0b1a2e 0%, #1a3752 100%);
+            color: #fff;
+            padding: 70px 0 60px;
+            text-align: center;
+            border-radius: 0 0 40px 40px;
+            margin-bottom: 40px;
+        }
+        .hero h2 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .hero h2 span {
+            color: #facc15;
+        }
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 18px auto 0;
+            opacity: 0.9;
+        }
+        .hero .btn {
+            display: inline-block;
+            margin-top: 30px;
+            background: #facc15;
+            color: #0b1a2e;
+            padding: 14px 44px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: 0.25s;
+            box-shadow: 0 6px 18px rgba(250, 204, 21, 0.35);
+        }
+        .hero .btn:hover {
+            background: #ffe45c;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(250, 204, 21, 0.45);
+        }
+
+        /* SECTION TITLES */
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 60px;
+            height: 4px;
+            background: #facc15;
+            border-radius: 4px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-center .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* ABOUT / TEAM */
+        .about-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .team-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 30px 28px;
+            flex: 1 1 260px;
+            max-width: 320px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+            transition: 0.25s;
+            border: 1px solid #e9edf2;
+        }
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        }
+        .team-card .avatar {
+            font-size: 3.4rem;
+            background: #eef3f9;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: #0b1a2e;
+        }
+        .team-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .team-card .role {
+            color: #facc15;
+            font-weight: 600;
+            background: #0b1a2e;
+            display: inline-block;
+            padding: 2px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            margin: 6px 0 8px;
+        }
+        .team-card .detail {
+            color: #3d4f62;
+            font-size: 0.95rem;
+            margin: 4px 0;
+        }
+        .team-card .detail i {
+            width: 22px;
+            color: #0b1a2e;
+        }
+
+        /* SERVICES */
+        .services-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            margin: 30px 0 10px;
+        }
+        .service-item {
+            background: #fff;
+            padding: 28px 24px;
+            border-radius: 20px;
+            flex: 1 1 200px;
+            max-width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eef2f6;
+            transition: 0.2s;
+        }
+        .service-item:hover {
+            border-color: #facc15;
+        }
+        .service-item i {
+            font-size: 2.6rem;
+            color: #0b1a2e;
+            background: #f0f5fb;
+            padding: 16px;
+            border-radius: 60px;
+            margin-bottom: 14px;
+        }
+        .service-item h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* CONTACT */
+        .contact-box {
+            background: #fff;
+            border-radius: 30px;
+            padding: 40px 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e9edf2;
+            margin: 30px 0 50px;
+        }
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-between;
+        }
+        .contact-info {
+            flex: 1 1 300px;
+        }
+        .contact-info .item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 22px;
+            font-size: 1.1rem;
+        }
+        .contact-info .item i {
+            width: 46px;
+            height: 46px;
+            background: #eef3f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #0b1a2e;
+            flex-shrink: 0;
+        }
+        .contact-info .item a {
+            color: #1e2a3a;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .contact-info .item a:hover {
+            color: #0b1a2e;
+            text-decoration: underline;
+        }
+        .contact-info .label {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .contact-note {
+            flex: 1 1 240px;
+            background: #f8faff;
+            padding: 24px 28px;
+            border-radius: 24px;
+            border-left: 6px solid #facc15;
+        }
+        .contact-note h4 {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+        }
+        .contact-note p {
+            color: #2d4055;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #0b1a2e;
+            color: #b0c4de;
+            padding: 28px 0;
+            text-align: center;
+            border-radius: 40px 40px 0 0;
+            margin-top: 30px;
+        }
+        footer .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        footer a {
+            color: #b0c4de;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #facc15;
+        }
+        .footer-social a {
+            margin: 0 8px;
+            font-size: 1.3rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            nav a {
+                margin-left: 0;
+                margin-right: 18px;
+                font-size: 0.95rem;
+            }
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .contact-grid {
+                flex-direction: column;
+            }
+            footer .container {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 40px 0 30px;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .team-card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+            .service-item {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="container header-flex">
+            <div class="logo">
+                <h1>City <span>Labour</span></h1>
+                <div class="tagline"><i class="fas fa-hard-hat"></i> City Labour – Trusted Service</div>
+            </div>
+            <nav>
+                <a href="#about"><i class="fas fa-users"></i> About Us</a>
+                <a href="#services"><i class="fas fa-tools"></i> Services</a>
+                <a href="#contact"><i class="fas fa-phone-alt"></i> Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <h2><span>City</span> Labour</h2>
+            <p>
+                <i class="fas fa-city"></i> Reliable labour services in Delhi<br />
+                We are <strong>Sushil Kumar Swami</strong> and <strong>Vansh</strong> – at your service
+            </p>
+            <a href="#contact" class="btn"><i class="fas fa-handshake"></i> Contact Us Today</a>
+        </div>
+    </section>
+
+    <!-- ABOUT / TEAM -->
+    <section id="about" class="container">
+        <div class="text-center">
+            <h2 class="section-title">Our Team</h2>
+            <p style="max-width:600px; margin: 10px auto 20px; color:#3d4f62;">
+                Two experienced partners, one mission – making your work easier.<br />
+                <i class="fas fa-map-pin" style="color:#0b1a2e;"></i> Both are based in <strong>Delhi</strong>.
+            </p>
+        </div>
+
+        <div class="about-grid">
+            <!-- Sushil -->
+            <div class="team-card">
+                <div class="avatar"><i class="fas fa-user-tie"></i></div>
+                <h3>Sushil Kumar Swami</h3>
+                <span class="role">Founder / Lead Manager</span>
+                <p class="detail"><i class="fas fa-calendar-alt"></i> Age : 41 years</p>
+                <p class="detail"><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+                <p class="detail" style="margin-top:8px; font-style:italic; color:#0b1a2e;">
+                    <i class="fas fa-star" style="color:#facc15;"></i> 15+ years of experience
+                </p>
+            </div>
+
+            <!-- Vansh -->
+            <div class="team-card">
+                <div class="avatar"><i class="fas fa-user-cog"></i></div>
+                <h3>Vansh</h3>
+                <span class="role">Co-Manager / Operations</span>
+                <p class="detail"><i class="fas fa-calendar-alt"></i> Age : 26 years</p>
+                <p class="detail"><i class="fas fa-map-marker-alt"></i> Delhi, India</p>
+                <p class="detail" style="margin-top:8px; font-style:italic; color:#0b1a2e;">
+                    <i class="fas fa-bolt" style="color:#facc15;"></i> Young energy & innovation
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="container" style="margin-top: 50px;">
+        <div class="text-center">
+            <h2 class="section-title">Our Services</h2>
+            <p style="color:#3d4f62; max-width:600px; margin: 10px auto 0;">
+                <i class="fas fa-hammer"></i> <strong>City Labour</strong> – construction, repairs, household help & more
+            </p>
+        </div>
+        <div class="services-grid">
+            <div class="service-item"><i class="fas fa-home"></i><h4>Household Help</h4><p style="font-size:0.9rem; color:#4a5e72;">Painting, plumbing, flooring</p></div>
+            <div class="service-item"><i class="fas fa-building"></i><h4>Construction Labour</h4><p style="font-size:0.9rem; color:#4a5e72;">Brickwork, cement, framing</p></div>
+            <div class="service-item"><i class="fas fa-truck"></i><h4>Goods Transport</h4><p style="font-size:0.9rem; color:#4a5e72;">Shifting, loading/unloading</p></div>
+            <div class="service-item"><i class="fas fa-wrench"></i><h4>Repair Works</h4><p style="font-size:0.9rem; color:#4a5e72;">Fittings, electrical, furniture</p></div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="container" style="margin-top: 40px;">
+        <div class="text-center">
+            <h2 class="section-title">Contact Us</h2>
+            <p style="color:#3d4f62;">We are available 24x7 – feel free to call or email</p>
+        </div>
+
+        <div class="contact-box">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="item">
+                        <i class="fas fa-user"></i>
+                        <div><span class="label">Name :</span> Sushil Kumar Swami</div>
+                    </div>
+                    <div class="item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div>
+                            <span class="label">Mobile 1 :</span>
+                            <a href="tel:+919310313328">9310313328</a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <span class="label">Mobile 2 :</span>
+                            <a href="tel:+919873777990">9873777990</a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <span class="label">Email :</span>
+                            <a href="mailto:vansfirecontrol.in@gmail.com">vansfirecontrol.in@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="fas fa-map-pin"></i>
+                        <div><span class="label">Location :</span> Delhi, India</div>
+                    </div>
+                </div>
+
+                <div class="contact-note">
+                    <h4><i class="fas fa-handshake" style="color:#facc15;"></i> Direct Contact</h4>
+                    <p>
+                        <strong>Sushil</strong> (41) and <strong>Vansh</strong> (26)<br />
+                        Both are available in <i class="fas fa-city"></i> Delhi.<br /><br />
+                        <i class="fas fa-clock"></i> 7:00 AM – 10:00 PM
+                    </p>
+                    <div style="margin-top:16px; background:#eef3f9; padding:10px 16px; border-radius:40px; display:inline-block;">
+                        <i class="fas fa-phone-alt" style="color:#0b1a2e;"></i> 9310313328
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div>
+                &copy; 2026 <strong>City Labour</strong> – Sushil Kumar Swami &amp; Vansh
+            </div>
+            <div class="footer-social">
+                <a href="tel:+919310313328"><i class="fas fa-phone"></i></a>
+                <a href="mailto:vansfirecontrol.in@gmail.com"><i class="fas fa-envelope"></i></a>
+               <!-- WhatsApp -->
+<a href="https://wa.me/919310313328" target="_blank" title="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- SMS -->
+<a href="sms:+919310313328" title="Send SMS">
+    <i class="fas fa-comment-dots"></i>
+</a>
+                <span style="margin-left:10px; font-size:0.9rem;">Delhi, India</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
